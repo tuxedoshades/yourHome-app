@@ -1,0 +1,11 @@
+﻿graph TD
+  Startup[onboarding.startup] --> Auth[onboarding.auth]
+  Auth --> Directory[directory.core]
+  Directory --> Feed[feed.timeline]
+  Directory --> Manager[manager.workspace]
+
+  Auth --> Identity[identity.auth]
+  Directory --> Property[properties.core]
+  Manager --> Verification[verification.workflow]
+  Manager --> Entitlements[billing.entitlements]
+  Feed --> Engagement[analytics.events]

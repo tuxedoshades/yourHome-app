@@ -1,0 +1,17 @@
+{"timestamp":"2026-02-20T14:00:01Z","workflow":"x-content-draft","runId":"x-001","accepted":true,"reasonCode":null}
+{"timestamp":"2026-02-20T14:05:10Z","workflow":"x-content-draft","runId":"x-002","accepted":false,"reasonCode":"weak-content"}
+{"timestamp":"2026-02-20T14:10:22Z","workflow":"x-content-draft","runId":"x-003","accepted":true,"reasonCode":null}
+{"timestamp":"2026-02-20T14:22:41Z","workflow":"x-content-draft","runId":"x-004","accepted":false,"reasonCode":"bad-format"}
+{"timestamp":"2026-02-20T15:01:51Z","workflow":"x-content-draft","runId":"x-005","accepted":true,"reasonCode":null}
+{"timestamp":"2026-02-20T15:10:11Z","workflow":"archive-status-card","runId":"a-001","accepted":true,"reasonCode":null}
+{"timestamp":"2026-02-20T15:20:04Z","workflow":"archive-status-card","runId":"a-002","accepted":false,"reasonCode":"delivery-fail"}
+{"timestamp":"2026-02-20T15:30:27Z","workflow":"archive-status-card","runId":"a-003","accepted":true,"reasonCode":null}
+{"timestamp":"2026-02-21T09:00:59Z","workflow":"archive-status-card","runId":"a-004","accepted":true,"reasonCode":null}
+{"timestamp":"2026-02-21T09:12:08Z","workflow":"archive-status-card","runId":"a-005","accepted":false,"reasonCode":"delivery-fail"}
+{"timestamp":"2026-02-21T09:20:16Z","workflow":"x-content-draft","runId":"x-006","accepted":false,"reasonCode":"policy-miss"}
+{"timestamp":"2026-02-21T09:30:30Z","workflow":"x-content-draft","runId":"x-007","accepted":true,"reasonCode":null}
+{"timestamp":"2026-02-21T10:00:30Z","workflow":"x-content-draft","runId":"x-008","accepted":false,"reasonCode":"weak-content"}
+{"timestamp":"2026-02-21T10:15:30Z","workflow":"archive-status-card","runId":"a-006","accepted":true,"reasonCode":null}
+{"timestamp":"2026-02-21T10:25:30Z","workflow":"archive-status-card","runId":"a-007","accepted":false,"reasonCode":"hallucinated-tool"}
+{"timestamp":"2026-02-21T10:35:30Z","workflow":"x-content-draft","runId":"x-009","accepted":true,"reasonCode":null}
+{"timestamp":"2026-02-21T10:45:30Z","workflow":"archive-status-card","runId":"a-008","accepted":true,"reasonCode":null}

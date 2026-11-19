@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "codes": [
+    {
+      "code": "bad-format",
+      "description": "Output format/schema did not match required structure"
+    },
+    {
+      "code": "hallucinated-tool",
+      "description": "Invented tools/actions or unsupported operations"
+    },
+    {
+      "code": "weak-content",
+      "description": "Low-quality content requiring substantial rewrite"
+    },
+    {
+      "code": "policy-miss",
+      "description": "Did not follow policy, constraints, or guardrails"
+    },
+    {
+      "code": "delivery-fail",
+      "description": "Execution/output delivery failed despite valid logic"
+    }
+  ]
+}

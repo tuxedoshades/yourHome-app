@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: yourhome-postgres
+    environment:
+      POSTGRES_DB: yourhome
+      POSTGRES_USER: yourhome
+      POSTGRES_PASSWORD: yourhome_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - yourhome_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yourhome -d yourhome"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
+
+volumes:
+  yourhome_pgdata:

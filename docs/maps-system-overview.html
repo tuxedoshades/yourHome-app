@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>YourHome Maps System Overview</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.45; margin: 40px; color: #111; }
+    h1, h2 { margin-top: 24px; }
+    ul { margin-top: 6px; }
+    code { background: #f3f4f6; padding: 1px 4px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>YourHome Maps: System Overview</h1>
+  <h2>1) Purpose</h2>
+  <p>YourHome’s map is a decision surface, not just a visual map. Users need stable, trustworthy nearby context (homes, schools, parks, etc.) while panning and zooming across iOS/Android.</p>
+
+  <h2>2) Architecture</h2>
+  <ul>
+    <li><b>Mobile (Expo/React Native):</b> UI, viewport, map interactions, pin rendering.</li>
+    <li><b>API (Fastify + TypeScript):</b> provider orchestration, ranking, dedupe, capping, caching, status output.</li>
+    <li><b>Postgres:</b> source of truth for platform entities (users, listings, verification, entitlements).</li>
+    <li><b>Prisma:</b> typed ORM between API and Postgres + migrations.</li>
+    <li><b>Providers:</b> Mapbox with fallback behavior for resilience.</li>
+  </ul>
+
+  <h2>3) Postgres (what it is)</h2>
+  <p>Postgres is a relational database server (dev at <code>localhost:5432</code>) that stores persistent data with constraints, indexing, transactions, and concurrency safety. API connects via <code>DATABASE_URL</code>.</p>
+
+  <h2>4) End-to-end map request flow</h2>
+  <ol>
+    <li>Client captures viewport bounds + term chips.</li>
+    <li>Client calls batch endpoint (<code>/directory/poi-search/batch</code>).</li>
+    <li>API normalizes terms, checks cache, queries providers, applies fallbacks.</li>
+    <li>API ranks by viewport-center distance, dedupes near duplicates, caps per term.</li>
+    <li>API returns items + per-term status (<code>ok/stale/timeout/error</code>).</li>
+    <li>Client renders pins and preserves stable UX while region changes continue.</li>
+  </ol>
+
+  <h2>5) Why backend batch orchestration</h2>
+  <p>A single backend contract avoids client-side provider chaos (inconsistent behavior, hard retries, difficult debugging). It centralizes reliability logic and improves cross-platform consistency.</p>
+
+  <h2>6) Stability mechanisms</h2>
+  <ul>
+    <li><b>Backend:</b> cache TTL, fallback strategy, ranking, dedupe, capping, per-term telemetry.</li>
+    <li><b>Frontend:</b> debounce, stale-request guard, last-good-pin preservation, selection persistence, low-zoom clustering.</li>
+  </ul>
+
+  <h2>7) Recent blockers and fixes</h2>
+  <ul>
+    <li>API strict TypeScript compile errors in POI paths were patched and build now passes.</li>
+    <li>Mobile workspace build failed from web export path + native maps import mismatch; build flow was adjusted for native export targets in this workflow.</li>
+    <li>Smoke test initially failed because Postgres was down; DB was restored + migrations applied + smoke passed end-to-end.</li>
+  </ul>
+
+  <h2>8) Team runbook (if broken)</h2>
+  <ol>
+    <li>Verify Postgres is up and reachable on 5432.</li>
+    <li>Apply/check Prisma migrations.</li>
+    <li>Run API and smoke test.</li>
+    <li>Inspect API logs + per-term status payload for map reliability issues.</li>
+  </ol>
+
+  <h2>9) 30-second summary</h2>
+  <p>YourHome map uses a mobile client + backend batch orchestration model. Client sends viewport and terms, API normalizes provider output with reliability logic, and Postgres/Prisma provide stable platform state. The result is predictable, debuggable map behavior at production quality.</p>
+</body>
+</html>

@@ -1,0 +1,11 @@
+**/node_modules/**
+**/dist/**
+**/build/**
+**/coverage/**
+**/.expo/**
+.hermes/**
+evidence/**
+apps/api/src/generated/**
+apps/mobile/android/**
+apps/mobile/dist-qa-*/**
+pnpm-workspace.yaml

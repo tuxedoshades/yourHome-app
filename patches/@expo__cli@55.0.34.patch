@@ -1,0 +1,31 @@
+diff --git a/build/src/start/server/AsyncNgrok.js b/build/src/start/server/AsyncNgrok.js
+index 4c42029bfb7dd2002d244f072aa107286ac44945..e20e4e6cde1150cd627d055310bbb398ff244ac6 100644
+--- a/build/src/start/server/AsyncNgrok.js
++++ b/build/src/start/server/AsyncNgrok.js
+@@ -217,12 +217,13 @@ class AsyncNgrok {
+             });
+             return url;
+         } catch (error) {
++            const errorBody = error == null ? void 0 : error.body;
+             const assertNgrok = ()=>{
+-                if ((0, _NgrokResolver.isNgrokClientError)(error)) {
+-                    var _error_body_details;
++                if (errorBody == null ? void 0 : errorBody.msg) {
++                    var _errorBody_details;
+                     throw new _errors.CommandError('NGROK_CONNECT', [
+-                        error.body.msg,
+-                        (_error_body_details = error.body.details) == null ? void 0 : _error_body_details.err,
++                        errorBody.msg,
++                        (_errorBody_details = errorBody.details) == null ? void 0 : _errorBody_details.err,
+                         _chalk().default.gray('Check the Ngrok status page for outages: https://status.ngrok.com/')
+                     ].filter(Boolean).join('\n\n'));
+                 }
+@@ -233,7 +234,7 @@ class AsyncNgrok {
+                 assertNgrok();
+             }
+             // Attempt to fix the issue
+-            if ((0, _NgrokResolver.isNgrokClientError)(error) && error.body.error_code === 103) {
++            if ((errorBody == null ? void 0 : errorBody.msg) && errorBody.error_code === 103) {
+                 // Assert early if a custom subdomain is used since it cannot
+                 // be changed and retried. If the tunnel subdomain is a boolean
+                 // then we can reset the randomness and try again.

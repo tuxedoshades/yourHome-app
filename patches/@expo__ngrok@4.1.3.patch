@@ -1,0 +1,47 @@
+diff --git a/src/client.js b/src/client.js
+--- a/src/client.js
++++ b/src/client.js
+@@ -12 +12,17 @@
++function createClientError(error) {
++  const response = error && error.response;
++  const responseBody = response && response.body;
++  if (responseBody) {
++    try {
++      const body = JSON.parse(responseBody);
++      return new NgrokClientError(body.msg, response, body);
++    } catch (_) {
++      return new NgrokClientError(responseBody, response, { msg: responseBody });
++    }
++  }
++
++  const message = (error && error.message) || String(error);
++  return new NgrokClientError(message, response, { msg: message });
++}
++
+ class NgrokClient {
+@@ -29,18 +45,3 @@
+     } catch (error) {
+-      let clientError;
+-      try {
+-        const response = JSON.parse(error.response.body);
+-        clientError = new NgrokClientError(
+-          response.msg,
+-          error.response,
+-          response
+-        );
+-      } catch (e) {
+-        clientError = new NgrokClientError(
+-          error.response.body,
+-          error.response,
+-          error.response.body
+-        );
+-      }
+-      throw clientError;
++      throw createClientError(error);
+     }
+@@ -54,4 +55,3 @@
+     } catch (error) {
+-      const response = JSON.parse(error.response.body);
+-      throw new NgrokClientError(response.msg, error.response, response);
++      throw createClientError(error);
+     }

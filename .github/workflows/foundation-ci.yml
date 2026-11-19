@@ -1,0 +1,107 @@
+name: Foundation CI
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+  push:
+    branches:
+      - master
+      - main
+
+concurrency:
+  group: foundation-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  cross-platform:
+    name: Cross-platform foundation
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.17.1
+
+      - name: Install Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24.18.0
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify migration integrity
+        run: pnpm test:migration-integrity
+
+      - name: Verify Prisma configuration
+        run: pnpm test:prisma-config
+
+      - name: Verify quality-gate configuration
+        run: pnpm run test:quality-gates
+
+      - name: Verify JWT security behavior
+        run: pnpm test:jwt-security
+
+      - name: Verify static-file security behavior
+        run: pnpm test:static-file-security
+
+      - name: Verify S3 security behavior
+        run: pnpm test:s3-security
+
+      - name: Verify email security behavior
+        run: pnpm test:email-security
+
+      - name: Lint workspaces
+        run: pnpm run lint
+
+      - name: Verify formatting
+        run: pnpm run format:check
+
+      - name: Build workspaces
+        run: pnpm run build
+
+      - name: Typecheck API scripts
+        run: pnpm --filter api typecheck:scripts
+
+      - name: Verify diff hygiene
+        run: git diff --check
+
+  windows-lifecycle:
+    name: Windows lifecycle
+    runs-on: windows-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.17.1
+
+      - name: Install Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24.18.0
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify Test-run lifecycle
+        run: pnpm test:run:check
+
+      - name: Verify Test-close lifecycle
+        run: pnpm test:close:check

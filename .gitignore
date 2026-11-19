@@ -1,0 +1,39 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# env
+.env
+.env.*
+!.env.example
+
+# build outputs
+dist/
+build/
+coverage/
+*.tsbuildinfo
+apps/mobile/.expo/
+/apps/mobile/dist-qa-*/
+
+# root-level temporary/debug captures
+/.tmp-*
+/tmp-*
+
+# local helper scripts
+apps/api/scripts/who-admin.js
+
+# logs
+*.log
+
+# runtime / os
+.DS_Store
+Thumbs.db
+
+# local secrets / state
+.secrets/
+.hermes/
+gemini-keys.txt
+gemini-key-state.json
+
+# prisma generated client (if generated into source)
+**/generated/

@@ -1,0 +1,13 @@
+﻿sequenceDiagram
+  participant App as Mobile/Web App
+  participant API as API Gateway
+  participant ID as Identity Context
+  participant PR as Property Context
+
+  App->>API: Login/Session request
+  API->>ID: Validate credentials/session
+  ID-->>API: Session + roles
+  App->>API: Fetch properties
+  API->>PR: Query property list
+  PR-->>API: Property DTOs
+  API-->>App: Response
